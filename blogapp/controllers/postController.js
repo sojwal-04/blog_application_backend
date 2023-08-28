@@ -21,5 +21,30 @@ exports.createPost = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: err.message,
+      message: "Error while saving the posts",
+    });
+  }
+};
+
+exports.getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find()
+      .populate("likes")
+      .populate("comments")
+      .exec();
+
+    res.send({
+      posts,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: err.message,
+      message: "Error while getting all posts",
+    });
   }
 };
